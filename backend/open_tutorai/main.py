@@ -1,5 +1,6 @@
 import os
 os.environ["SUPPRESS_WEBUI_BANNER"] = "true"
+
 import open_tutorai.patches
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,16 +10,14 @@ from open_webui.models.users import Users
 from open_tutorai.config import AppConfig
 from open_tutorai.models.database import init_database
 
-<<<<<<< HEAD
+# ✅ version fusionnée propre
 from open_tutorai.routers import (
     response_feedbacks,
     auths,
-    supports
+    supports,
+    blockly
 )
 
-=======
-from open_tutorai.routers import response_feedbacks, auths, supports, blockly
->>>>>>> 711aa15 (Fonctionnalités complétées :)
 from open_tutorai.env import (
     CHANGELOG,
 )
@@ -26,7 +25,6 @@ from open_tutorai.env import (
 # Version info
 VERSION = "1.0.0"
 TUTORAI_BUILD_HASH = os.getenv("TUTORAI_BUILD_HASH", "dev-build")
-os.environ["SUPPRESS_WEBUI_BANNER"] = "true"
 
 print(
     rf"""
@@ -55,6 +53,7 @@ allow_origin_regex = None
 if "*" in origins:
     origins = []
     allow_origin_regex = ".*"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -63,13 +62,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.state.config = AppConfig()
-# app.state.USER_COUNT = 10
 
 # Initialize the database tables on startup
 @app.on_event("startup")
 async def startup_db_client():
-    """Initialize the database tables when the app starts"""
     try:
         init_database()
         print("Support database tables initialized successfully")
@@ -83,14 +81,13 @@ async def health_check():
     return {"status": "okay"}
 
 
-# Include routers of open_tutorai
+# Include routers
 app.include_router(response_feedbacks.router, prefix="/api/v1", tags=["response-feedbacks"])
 app.include_router(auths.router, prefix="/auths", tags=["auths"])
 app.include_router(supports.router, prefix="/api/v1", tags=["supports"])
-<<<<<<< HEAD
-=======
+
+# ✅ ajout blockly
 app.include_router(blockly.router)
->>>>>>> 711aa15 (Fonctionnalités complétées :)
 
 @app.get("/api/changelog")
 async def get_app_changelog():
