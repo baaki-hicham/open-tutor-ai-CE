@@ -9,12 +9,16 @@ from open_webui.models.users import Users
 from open_tutorai.config import AppConfig
 from open_tutorai.models.database import init_database
 
+<<<<<<< HEAD
 from open_tutorai.routers import (
     response_feedbacks,
     auths,
     supports
 )
 
+=======
+from open_tutorai.routers import response_feedbacks, auths, supports, blockly
+>>>>>>> 711aa15 (Fonctionnalités complétées :)
 from open_tutorai.env import (
     CHANGELOG,
 )
@@ -83,6 +87,10 @@ async def health_check():
 app.include_router(response_feedbacks.router, prefix="/api/v1", tags=["response-feedbacks"])
 app.include_router(auths.router, prefix="/auths", tags=["auths"])
 app.include_router(supports.router, prefix="/api/v1", tags=["supports"])
+<<<<<<< HEAD
+=======
+app.include_router(blockly.router)
+>>>>>>> 711aa15 (Fonctionnalités complétées :)
 
 @app.get("/api/changelog")
 async def get_app_changelog():
