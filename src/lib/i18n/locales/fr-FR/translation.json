@@ -1506,5 +1506,21 @@
 	"I want to build a new skill": "Je veux apprendre une nouvelle compétence",
 	"Verify all details before creating your support": "Vérifiez toutes les informations avant de créer votre soutien",
 	"Review your support": "Révisez votre soutien",
-	"Support created successfully": "Soutien créé avec succès"
+	"Support created successfully": "Soutien créé avec succès",
+	"Profile": "Profil",
+	"is required": "est requis",
+	"Name is required": "Le nom est requis",
+	"Password must be at least 8 characters long": "Le mot de passe doit contenir au moins 8 caractères",
+	"Passwords do not match": "Les mots de passe ne correspondent pas",
+	"Profile updated successfully": "Profil mis à jour avec succès",
+	"Password changed successfully": "Mot de passe modifié avec succès",
+	"Profile Image URL": "URL de l'image de profil",
+	"Optional": "Optionnel",
+	"Save Changes": "Enregistrer les modifications",
+	"New password is required": "Un nouveau mot de passe est requis",
+	"Error updating profile": "Erreur lors de la mise à jour du profil",
+	"Error changing password": "Erreur lors du changement de mot de passe",
+	"Enter your full name": "Entrez votre nom complet",
+	"Enter your current password": "Entrez votre mot de passe actuel",
+	"Enter your new password": "Entrez votre nouveau mot de passe"
 }

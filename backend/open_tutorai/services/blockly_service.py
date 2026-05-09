@@ -176,7 +176,7 @@ En 3 phrases maximum :
             response = requests.post(
                 'http://localhost:11434/api/generate',
                 json={
-                    "model": "qwen2.5:0.5b",
+                    "model": "qwen3:1.7b",
                     "prompt": prompt,
                     "stream": True,
                     "options": {
