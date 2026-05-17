@@ -126,3 +126,117 @@ class BlocklyProgressStats(BaseModel):
     completed_assignments: int
     total_assignments: int
     last_activity: Optional[datetime] = None
+    # ─────────────────────────────────────────────────────────────────────────────
+# COLLE CES LIGNES À LA FIN DE : backend/open_tutorai/schemas/blockly.py
+# (après la classe BlocklyProgressStats qui termine le fichier existant)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# ─── Génération IA (nouveaux schémas) ─────────────────────────────────────────
+
+class BlocklyGenerateRequest(BaseModel):
+    """
+    Corps de la requête POST /api/blockly/generate
+    Envoyé par l'enseignant pour demander un exercice à l'IA.
+    """
+
+    theme: str = Field(
+        ...,
+        min_length=2,
+        max_length=100,
+        description="Thème de l'exercice",
+        examples=["boucles", "conditions", "listes", "fonctions"],
+    )
+
+    level: str = Field(
+        "débutant",
+        description="Niveau de difficulté",
+        examples=["débutant", "intermédiaire", "avancé"],
+    )
+
+    objective: str = Field(
+        ...,
+        min_length=10,
+        max_length=500,
+        description="Objectif pédagogique précis",
+        examples=["afficher les nombres de 1 à N avec une boucle"],
+    )
+
+    course_id: Optional[str] = Field(
+        None,
+        description="ID du cours auquel rattacher l'exercice",
+    )
+
+    num_test_cases: int = Field(
+        3,
+        ge=1,
+        le=10,
+        description="Nombre de cas de test à générer",
+    )
+
+    allowed_blocks_hint: Optional[List[str]] = Field(
+        None,
+        description="Suggestion de blocs à utiliser (optionnel)",
+        examples=[["controls_repeat_ext", "math_number", "text_print"]],
+    )
+
+    @validator("level")
+    def validate_level(cls, v):
+        valid = ["débutant", "intermédiaire", "avancé"]
+        if v not in valid:
+            raise ValueError(f"level doit être parmi : {valid}")
+        return v
+
+    @validator("theme")
+    def validate_theme(cls, v):
+        return v.strip()
+
+    @validator("objective")
+    def validate_objective(cls, v):
+        return v.strip()
+
+
+class BlocklyGenerateResponse(BaseModel):
+    """
+    Réponse du POST /api/blockly/generate
+    Retourne l'exercice généré avec son ID en DB.
+    """
+
+    id: str
+    title: str
+    description: str
+    difficulty: str
+    allowed_blocks: Optional[List[str]] = None
+    test_cases: List[TestCase]
+    hints: List[str] = []
+    max_score: int = 100
+    course_id: Optional[str] = None
+    generated_by_ai: bool = True
+    is_published: bool = False
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class BlocklyPublishRequest(BaseModel):
+    """
+    Corps de la requête POST /api/blockly/assignment/{id}/publish
+    L'enseignant publie un exercice pour le rendre visible aux étudiants.
+    """
+    # Pas de champs : l'ID est dans l'URL, aucune donnée supplémentaire nécessaire
+    pass
+
+
+class BlocklyRegenerateRequest(BaseModel):
+    """
+    Corps de la requête POST /api/blockly/assignment/{id}/regenerate
+    L'enseignant demande une nouvelle version avec un commentaire.
+    """
+
+    feedback: str = Field(
+        "",
+        max_length=500,
+        description="Commentaire de l'enseignant pour améliorer l'exercice",
+        examples=["Les cas de test sont trop simples", "Ajoute un cas avec N=0"],
+    )
